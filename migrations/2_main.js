@@ -1,21 +1,18 @@
-const TimelockController = artifacts.require("TimelockController");
-let DELAY, PROPOSERS, EXECUTORS;
+const Timelock = artifacts.require("Timelock");
 module.exports = async function (deployer, network, accounts) {
+    let admin;
     if (network == 'bsc') {
         DELAY = '86400';
-        PROPOSERS = ['0xE4395b8b646A0144AA6D1256d8eCA3bF2ddA568E'];
-        EXECUTORS = ['0xE4395b8b646A0144AA6D1256d8eCA3bF2ddA568E'];
+        admin = accounts[0];
     }
     if (network == 'testnet') {
         DELAY = '120';
-        PROPOSERS = [ accounts[0] ];
-        EXECUTORS = [ accounts[0] ];
+        admin = accounts[0];
     }
     if (network == 'dev') {
         DELAY = '2';
-        PROPOSERS = [ accounts[0] ];
-        EXECUTORS = [ accounts[0] ];
+        admin = accounts[0];
     }
-    await deployer.deploy(TimelockController, DELAY, PROPOSERS, EXECUTORS);
+    await deployer.deploy(Timelock, DELAY, admin);
     // const timelock = await TimelockController.deployed();
 };
